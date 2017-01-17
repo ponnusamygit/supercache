@@ -10,14 +10,13 @@ module Supercache
       @http_cache = cache.read(:http_supercache)
     end
 
-    def leave_out_flip
-      queries = cache.read(:except)
-      if queries.try(:include?, @query)
-        queries.delete @query
-      else
-        queries.push @query
+    def except_list.
+      queries = cache.read(:except) || []
+      unless queries.try(:include?, @query)
+        queries.push @query 
       end
       cache.write(:except, queries)
+      redirect_to :root
     end
 
     def flip
@@ -39,8 +38,8 @@ module Supercache
       @cache = params[:cache]
     end
 
-    def leave_out_query
-      # @query = Digest::SHA1.hexdigest(args[0].path.to_s + args[0].body.to_s)
+    def load_query
+      @query = params[:query]
     end
 
   end
