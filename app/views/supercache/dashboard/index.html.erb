@@ -3,22 +3,42 @@
     <tr>
       <td><h5>Active Record Cache</h5></td>
       <td>
-        <% if @ar_cache %>
-          <%= link_to 'ON', flip_dashboard_index_path(cache: 'ar_supercache'), class: 'right waves-effect waves-light btn green darken-3' %>
-        <% else %>
-          <%= link_to 'OFF', flip_dashboard_index_path(cache: 'ar_supercache'), class: 'right waves-effect waves-light btn red lighten-1' %>
-        <% end %>
+        <div class="ar_supercache_switch switch">
+          <label>
+            Off
+            <input type="checkbox" class="">
+            <%= check_box_tag 'ar_supercache', "#{@ar_cache.present?}", @ar_cache.present? %>
+            <span class="lever"></span>
+            On
+          </label>
+        </div>
       </td>
     </tr>
     <tr>
       <td><h5>HTTP Cache</h5></td>
       <td>
-        <% if @http_cache %>
-          <%= link_to 'ON', flip_dashboard_index_path(cache: 'http_supercache'), class: 'right waves-effect waves-light btn green darken-3' %>
-        <% else %>
-          <%= link_to 'OFF', flip_dashboard_index_path(cache: 'http_supercache'), class: 'right waves-effect waves-light btn red lighten-1' %>
-        <% end %>
+        <div class="http_supercache_switch switch">
+          <label>
+            Off
+            <%= check_box_tag 'http_supercache', "#{@http_cache.present?}", @http_cache.present? %>
+            <input type="checkbox" class="">
+            <span class="lever"></span>
+            On
+          </label>
+        </div>
       </td>
     </tr>
   </tbody>
 </table>
+
+<% content_for :javascript do %>
+  <script>
+    $(document).on("change", ".ar_supercache_switch" , function() {
+      window.location = '/supercache/dashboard/flip?cache=ar_supercache'
+    });
+
+    $(document).on("change", ".http_supercache_switch", function() {
+      window.location = '/supercache/dashboard/flip?cache=http_supercache'
+    });
+  </script>
+<% end %>
